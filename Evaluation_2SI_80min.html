@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Évaluation 2SI – 80 minutes</title>
+<style>
+:root{color-scheme:light;--pri:#1e3a8a;--bd:#cfd7e6;--mut:#55627a;--bg:#f3f5f9;--ink:#1b2438}
+*{box-sizing:border-box}
+html{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+[hidden]{display:none!important}
+.wrap{max-width:980px;margin:0 auto;padding:18px 16px 60px}
+.off{display:grid;grid-template-columns:1fr 1fr;gap:4px 24px;background:#fff;border:1px solid var(--bd);border-top:4px solid #e70013;border-radius:10px;padding:14px 18px;margin:0 0 16px;font-size:14px}
+.off b{color:var(--pri)}.off .c{grid-column:1/-1;text-align:center;border-top:1px solid var(--bd);margin-top:6px;padding-top:8px;font-size:15px}
+.card{background:#fff;border:1px solid var(--bd);border-radius:12px;padding:18px 20px;margin:0 0 16px}
+h1{font-size:22px;margin:0 0 6px;color:var(--pri)}h2{font-size:18px;margin:0 0 10px;color:var(--pri)}h3{font-size:15px;margin:16px 0 6px;color:var(--pri);border-left:4px solid var(--pri);padding-left:9px}
+label{display:block;font-weight:600;font-size:13px;margin:10px 0 3px}
+input[type=text],input[type=email],select,textarea{font:inherit;border:1px solid #9aa6bf;border-radius:7px;padding:8px 10px;background:#fff;color:var(--ink);width:100%}
+input:focus,select:focus,textarea:focus{outline:2px solid #93a9e0;outline-offset:1px}
+.btn{font:600 14px system-ui,sans-serif;border:0;border-radius:8px;padding:10px 18px;background:var(--pri);color:#fff;cursor:pointer;transition:filter .15s}
+.btn:hover{filter:brightness(1.12)}.btn.g{background:#e3e7f3;color:var(--ink)}.btn.ok{background:#15803d}.btn:disabled{opacity:.5;cursor:not-allowed}
+.rules{margin:10px 0;padding-left:20px}.rules li{margin:4px 0}
+#bar{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--bd);padding:8px 14px;padding-top:calc(8px + env(safe-area-inset-top,0px))}
+#bar .in{max-width:980px;margin:0 auto;display:flex;flex-wrap:wrap;gap:6px 18px;align-items:center;justify-content:space-between;font-size:13px}
+#bar .id{color:var(--mut)}#bar .id b{color:var(--ink)}
+#tm{font:700 24px ui-monospace,Consolas,monospace;color:var(--pri);letter-spacing:1px}#tm.low{color:#b91c1c}
+#pg{height:5px;background:#e3e7f3}#pg i{display:block;height:100%;width:0;background:var(--pri);transition:width .5s}
+.steps{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 14px}
+.steps span{flex:1 1 150px;border:1px solid var(--bd);background:#fff;border-radius:8px;padding:7px 10px;font-size:13px;color:var(--mut)}
+.steps span.on{border-color:var(--pri);color:var(--pri);font-weight:700;background:#eaf0fb}.steps span.ok{background:#ecfdf3;border-color:#86c9a0;color:#14632f}
+.q{border:1px solid var(--bd);border-radius:10px;padding:12px 14px;margin:0 0 12px}.q p{margin:0 0 8px;font-weight:600}
+.q .o{display:block;font-weight:400;margin:3px 0;font-size:14.5px;cursor:pointer}.q .o input{margin-right:8px}
+pre{background:#f8fafc;border:1px solid var(--bd);border-left:4px solid var(--pri);border-radius:8px;padding:12px 14px;font:13.5px/1.6 ui-monospace,Consolas,monospace;overflow:auto;margin:8px 0;white-space:pre}
+table{border-collapse:collapse;width:100%;font-size:14px}th,td{border:1px solid #8a96ad;padding:6px 8px;text-align:left;vertical-align:middle}th{background:#e9eef8;color:var(--pri)}
+td input,td select{padding:5px 7px}.tw{overflow-x:auto}
+.mini{display:inline-block;width:84px;margin:0 4px 0 2px}
+textarea.alg{font:14px/1.6 ui-monospace,Consolas,monospace;height:calc(30 * 1.6em + 20px);resize:none;white-space:pre;overflow:auto;tab-size:2}
+.tb{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}.tb button{font:600 14px ui-monospace,Consolas,monospace;border:1px solid #9aa6bf;background:#fff;border-radius:6px;padding:4px 12px;cursor:pointer}
+.nav{display:flex;justify-content:flex-end;gap:10px;margin-top:14px}
+.warn{background:#fff7ed;border:1px solid #e0a15c;border-radius:8px;padding:9px 12px;font-size:14px;margin:8px 0}
+.good{color:#14632f;font-weight:600}.mid{color:#9a5b00;font-weight:600}.bad{color:#b42318;font-weight:600}
+.big{font-size:40px;font-weight:800;color:var(--pri);line-height:1.1}
+.kpis{display:flex;gap:12px;flex-wrap:wrap;margin:10px 0}.kpis div{flex:1 1 150px;border:1px solid var(--bd);border-radius:10px;padding:10px 14px;background:#f8fafc}.kpis small{display:block;color:var(--mut)}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:#1b2438;color:#fff;padding:9px 16px;border-radius:8px;font-size:14px;z-index:50}
+@media print{#bar,.nav,.nop{display:none!important}body{background:#fff}.card{break-inside:avoid}}
+@media(max-width:640px){.off{grid-template-columns:1fr}}
+</style></head><body>
+<div id="login" class="wrap">
+ <div class="off"><div><b>République Tunisienne</b></div><div>Année scolaire : <b>2026 – 2027</b></div><div>Ministère de l’Éducation</div><div>Email : <b>aymen.a@hotmail.com</b></div><div>Lycée Hannibal – Ariana</div><div>Niveau : <b>2ème Informatique</b></div>
+ <div class="c"><b>Évaluation : Algorithmique et Programmation</b> · Les structures de données et les structures itératives</div></div>
+ <div class="card"><h1>Connexion à l’évaluation</h1>
+  <p style="margin:0;color:var(--mut)">Durée totale : <b>80 minutes</b>, notée sur <b>100 points</b>, corrigée automatiquement.</p>
+  <label for="ln">Nom et prénom</label><input type="text" id="ln" autocomplete="off">
+  <label for="lc">Classe</label><input type="text" id="lc" autocomplete="off">
+  <label for="le">Adresse e-mail</label><input type="email" id="le" autocomplete="off">
+  <label for="lw">WhatsApp (facultatif)</label><input type="text" id="lw" autocomplete="off">
+  <h3>Règles de l’évaluation</h3>
+  <ul class="rules"><li>Le chronomètre de <b>80 minutes</b> démarre dès que tu cliques sur « Commencer » et <b>ne peut pas être arrêté</b>, même si tu fermes ou actualises la page.</li>
+  <li>Les 4 exercices se font <b>dans l’ordre</b>. À la fin de chaque exercice, tu dois <b>confirmer tes réponses</b> : après confirmation, tu ne peux plus les modifier ni revenir en arrière.</li>
+  <li>Quand tu confirmes le dernier exercice, ou quand le temps est écoulé, ton rapport final (réponses, correction, notes, temps écoulé) s’affiche et est envoyé à ton professeur.</li>
+  <li>Le collage de texte est désactivé dans l’éditeur d’algorithme. Les sorties de la page sont comptabilisées dans le rapport.</li>
+  <li>Il n’y a ni vérification automatique ni indentation automatique : l’indentation fait partie de la note.</li></ul>
+  <p id="le_err" class="bad" style="margin:8px 0 0"></p>
+  <div style="margin-top:12px"><button class="btn" id="lb">Commencer l’évaluation (le chronomètre démarre)</button></div>
+ </div></div>
+<div id="app" hidden>
+ <div id="bar"><div class="in"><div class="id"><b id="bn"></b> · <span id="bc"></span> · <span id="be"></span> · <span id="bw"></span></div><div>Temps restant : <span id="tm">80:00</span></div></div></div><div id="pg"><i></i></div>
+ <div class="wrap"><div class="off"><div><b>République Tunisienne</b></div><div>Année scolaire : <b>2026 – 2027</b></div><div>Ministère de l’Éducation</div><div>Email : <b>aymen.a@hotmail.com</b></div><div>Lycée Hannibal – Ariana</div><div>Niveau : <b>2ème Informatique</b></div>
+ <div class="c"><b>Évaluation : Algorithmique et Programmation</b> · Les structures de données et les structures itératives</div></div>
+ <div class="steps" id="steps"></div><div id="ex"></div></div></div>
+<div id="rep" hidden class="wrap"></div>
+<script>
+const REF=`ALGORITHME billetterie_famille
+DEBUT
+  rang <- 0
+  total_ht <- 0.0
+  Répéter
+    rang <- rang + 1
+    Ecrire("--- Inscription du membre n°", rang, " ---")
+    Répéter
+      Ecrire("Choisissez la formule (A : 40 TND, B : 75 TND, C : 120 TND) : ")
+      Lire(formule)
+      formule <- majus(formule)
+    Jusqu'à (formule dans ["A", "B", "C"])
+    Selon formule Faire
+      "A" : tarif_base <- 40.0
+      "B" : tarif_base <- 75.0
+      "C" : tarif_base <- 120.0
+    Fin Selon
+    Si (rang = 1) Alors
+      tarif_membre <- tarif_base
+    Sinon Si (rang = 2) Alors
+      tarif_membre <- tarif_base * 0.85
+    Sinon
+      tarif_membre <- tarif_base * 0.75
+    Fin Si
+    Ecrire("Tarif HT pour ce membre : ", tarif_membre, " TND")
+    total_ht <- total_ht + tarif_membre
+    Répéter
+      Ecrire("Ajouter un autre membre de la famille ? (O/N) : ")
+      Lire(rep)
+      rep <- majus(rep)
+    Jusqu'à (rep dans ["O", "N"])
+  Jusqu'à (rep = "N")
+  total_ttc <- total_ht * 1.19
+  Ecrire("-----------------------------------------")
+  Ecrire("Nombre total de membres : ", rang)
+  Ecrire("Montant Total HT : ", total_ht, " TND")
+  Ecrire("Montant Total TTC (TVA 19%) : ", total_ttc, " TND")
+FIN`;
+const REF_TDO=[['rang','Entier'],['total_ht','Réel'],['total_ttc','Réel'],['formule','Caractère'],['tarif_base','Réel'],['tarif_membre','Réel'],['rep','Caractère']];
+const N=s=>(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+const stripStr=l=>l.replace(/"[^"]*"|'[^']*'/g,'""');
+const r1=x=>Math.round(x*100)/100;
+function cleanLines(text){return (text||'').replace(/\r/g,'').split('\n').map(l=>l.replace(/\t/g,'  ').replace(/<-/g,'←').replace(/\/\/.*$/,'').replace(/\s+$/,''))}
+function kind(l){const t=N(stripStr(l)).trim();
+ if(!t)return 'empty';
+ if(/^algorithme\b/.test(t))return 'head';
+ if(/^debut\b/.test(t))return 'debut';
+ if(/^fin$/.test(t))return 'fin';
+ if(/^fin ?(si|pour|tant ?que|selon)\b/.test(t))return 'close';
+ if(/^jusqu/.test(t))return 'until';
+ if(/^repeter\b/.test(t))return 'rep';
+ if(/^tant ?que\b/.test(t))return 'while';
+ if(/^pour\b/.test(t))return 'for';
+ if(/^selon\b/.test(t))return 'selon';
+ if(/^sinon ?si\b/.test(t))return 'elsif';
+ if(/^sinon\b/.test(t))return 'else';
+ if(/^si\b/.test(t))return 'if';
+ return 'stmt'}
+function walk(lines){let L=0,stack=[],rows=[],loops=[],unb=0;
+ lines.forEach(raw=>{const k=kind(raw);if(k==='empty')return;const ind=raw.match(/^ */)[0].length;let exp=L;
+  const d=()=>stack.filter(b=>b.loop).length+1;
+  if(k==='head')exp=0;
+  else if(k==='debut'){exp=0;L=1}
+  else if(k==='fin'){exp=0;L=0}
+  else if(k==='close'){if(!stack.length)unb++;const b=stack.pop();L=Math.max(0,L-1);exp=L;if(b&&b.t==='while'){}}
+  else if(k==='until'){const i=stack.map(b=>b.t).lastIndexOf('rep');if(i<0)unb++;else{stack[i].o.cond=raw;stack.splice(i,1)}L=Math.max(0,L-1);exp=L}
+  else if(k==='else'||k==='elsif'){exp=Math.max(0,L-1)}
+  else if(k==='rep'){const o={kind:'rep',depth:d(),cond:''};loops.push(o);stack.push({t:'rep',loop:1,o});L++}
+  else if(k==='while'){const o={kind:'while',depth:d(),cond:raw};loops.push(o);stack.push({t:'while',loop:1,o});L++}
+  else if(k==='for'){const o={kind:'for',depth:d(),cond:raw};loops.push(o);stack.push({t:'for',loop:1,o});L++}
+  else if(k==='if'){if(!/fin ?si\s*$/i.test(raw)){stack.push({t:'if'});L++}}
+  else if(k==='selon'){stack.push({t:'selon'});L++}
+  rows.push({raw,ind,exp,k})});
+ return{rows,loops,unb,open:stack.length}}
+function assigns(lines){const m={};lines.forEach(l=>{const t=stripStr(l);t.split(/:|\balors\b|\bsinon\b/i).forEach(seg=>{const a=/^\s*([A-Za-z_]\w*)\s*←\s*(.*)$/.exec(seg);if(a)(m[a[1]]=m[a[1]]||[]).push(a[2])})});return m}
+function inferTypes(lines,flat){const A=assigns(lines),T={};const names=new Set(Object.keys(A));
+ (flat.match(/lire\s*\(\s*[A-Za-z_]\w*\s*\)/gi)||[]).forEach(x=>names.add(/\(\s*(\w+)/.exec(x)[1]));
+ names.forEach(v=>{const rx=new RegExp('\\b'+v+'\\s*(=|≠|#|dans)\\s*[\\["\']');const mj=new RegExp('majus\\s*\\(\\s*'+v+'\\b','i');if(rx.test(flat)||mj.test(flat))T[v]='str'});
+ for(let p=0;p<3;p++)Object.keys(A).forEach(v=>{let t=T[v];A[v].forEach(r=>{let c=null;
+   if(/""|\bmajus\s*\(|\bconvch\s*\(|\bsous_chaine\s*\(/i.test(r))c='str';
+   else{const ids=(r.match(/[A-Za-z_]\w*/g)||[]).filter(x=>!/^(abs|ent|arrondi|racinecarre|div|mod)$/i.test(x));
+    if(/\d+[.,]\d+/.test(r)||ids.some(x=>T[x]==='real'))c='real';
+    else if(ids.some(x=>T[x]==='str')&&ids.length===1)c='str';
+    else if(/^[\s\d+\-*()]*$/.test(r.replace(/[A-Za-z_]\w*/g,'')) )c='int'}
+   if(c==='str')t='str';else if(c==='real'&&t!=='str')t='real';else if(c==='int'&&!t)t='int'});if(t)T[v]=t});
+ return{T,names:[...names]}}
+function declType(t){t=N(t);if(/entier/.test(t))return'int';if(/reel/.test(t))return'real';if(/caractere|chaine/.test(t))return'str';if(/booleen/.test(t))return'bool';return''}
+function gradeEx4(tdoRows,text){
+ const lines=cleanLines(text).filter(l=>l.trim()),flat=lines.map(l=>l.trim()).join(' ').replace(/\s+/g,' ');
+ const W=walk(lines),R={};
+ // ---- TDO (10)
+ const {T,names}=inferTypes(lines,flat);const dec={};let dup=false,badId=false,rows=0;
+ (tdoRows||[]).forEach(r=>{const o=(r[0]||'').trim(),t=(r[1]||'').trim();if(!o&&!t)return;
+  o.split(',').map(x=>x.trim()).filter(Boolean).forEach(n=>{if(!/^[A-Za-z][A-Za-z0-9_]*$/.test(n))badId=true;if(dec[n.toLowerCase()]!==undefined)dup=true;dec[n.toLowerCase()]=declType(t)});if(o&&t)rows++});
+ const used=names.filter(v=>!/^(ecrire|lire)$/i.test(v)),f=Math.min(1,used.length/5);
+ const inDecl=used.filter(v=>dec[v.toLowerCase()]!==undefined).length,cov=used.length?inDecl/used.length:0;
+ const typed=used.filter(v=>T[v]);let tsum=0;typed.forEach(v=>{const d=dec[v.toLowerCase()];if(d===T[v]||(T[v]==='real'&&d==='real'))tsum+=1;else if(T[v]==='int'&&d==='real')tsum+=(new RegExp('\\b'+v+'\\s*←\\s*'+v+'\\s*\\+\\s*1(?![\\d.])').test(flat)?.5:1)});
+ const tf=typed.length?tsum/typed.length:0;
+ const tdo=[['Tableau rempli (au moins 3 objets avec leur type)',rows>=3?1:0,1],['Objets utilisés par l’algorithme déclarés ('+inDecl+'/'+used.length+')',4*cov*f,4],['Types cohérents avec l’utilisation',4*tf*f,4],['Noms valides et sans doublon',(rows&&!dup&&!badId)?1:0,1]];
+ // ---- Conditionnelles (15)
+ const cm=/(\w+)\s*←\s*\1\s*\+\s*1(?![\d.])/.exec(flat),cn=cm?cm[1]:'rang';
+ const cond=[];[['A','40'],['B','75'],['C','120']].forEach(([L,P])=>{const ok=new RegExp('["\']'+L+'["\'][^"\']{0,70}?←\\s*'+P+'(?:[.,]0+)?(?![\\d.,])','i').test(flat);const ok2=ok||(L==='C'&&/sinon(?!\s*si\b)\s*\w+\s*←\s*120(?![\d])/i.test(flat));cond.push(['Formule '+L+' : tarif de base '+P,ok2?5/3:0,5/3])});
+ const c1=new RegExp('('+cn+'\\s*(=|<=|≤)\\s*1\\b|'+cn+'\\s*<\\s*2)\\s*\\)?\\s*alors\\s*\\w+\\s*←\\s*\\w+\\b(?!\\s*[*+\\-/])','i').test(flat);
+ const c2=new RegExp('('+cn+'\\s*(=|<=|≤)\\s*2\\b|'+cn+'\\s*<\\s*3)\\s*\\)?\\s*alors[^]{0,80}?(0[.,]85|0[.,]15)(?!\\d)','i').test(flat);
+ const c3=new RegExp('(sinon(?!\\s*si\\b)|'+cn+'\\s*(>=|≥|>)\\s*[23]\\b)[^]{0,80}?(0[.,]75|0[.,]25)(?!\\d)','i').test(flat);
+ cond.push(['Rang 1 : plein tarif',c1?3:0,3],['Rang 2 : réduction de 15 %',c2?3:0,3],['Rang 3 et plus : réduction de 25 %',c3?3:0,3]);
+ const nIf=W.rows.filter(r=>r.k==='if').length,nFs=W.rows.filter(r=>/^fin ?si/.test(N(stripStr(r.raw)).trim())).length,hasE=W.rows.some(r=>r.k==='else'||r.k==='elsif');
+ cond.push(['Structure Si … Sinon Si … Sinon … FinSi complète',(nIf>=1&&nIf===nFs&&hasE)?1:0,1]);
+ // ---- Itératives (15)
+ const hasL=c=>/["']A["']/i.test(c)&&/["']B["']/i.test(c)&&/["']C["']/i.test(c),hasON=c=>/["']O["']/i.test(c)&&/["']N["']/i.test(c),single=c=>(/["']N["']/i.test(c)||/["']O["']/i.test(c))&&!hasON(c)&&!hasL(c);
+ const Lp=W.loops,outer=Lp.find(l=>single(l.cond)),lf=Lp.find(l=>hasL(l.cond)),lr=Lp.find(l=>hasON(l.cond));
+ const nest=(l,min)=>l&&l.depth>=min,deeper=outer&&Lp.some(l=>l.depth>outer.depth);
+ const iter=[['Boucle principale : tant que l’utilisateur répond O (arrêt sur N)',(outer?3:0)+(outer&&deeper?2:0),5],['Contrôle de saisie de la formule (A, B ou C), à l’intérieur de la boucle',(lf?3:0)+(nest(lf,2)?2:0),5],['Contrôle de saisie de la réponse (O ou N), à l’intérieur de la boucle',(lr?3:0)+(nest(lr,2)?2:0),5]];
+ // ---- Instructions simples (5) + indentation (5)
+ const L=(f,n)=>f.test(flat);const tm=/(\w+)\s*←\s*\1\s*\+\s*(?!1(?![\d.]))\w+/.exec(flat),tn=tm?tm[1]:'';
+ const tt=/(\w+)\s*←\s*\w+\s*\*\s*1[.,]19(?!\d)/.exec(flat)||/(\w+)\s*←\s*[^←]{0,40}?0[.,]19/.exec(flat),ttv=tt?tt[1]:'';
+ const nLire=lines.filter(l=>/^\s*lire\b/i.test(l)).length,wr=lines.filter(l=>/^\s*(ecrire|écrire)/i.test(l)),stmtEq=lines.some(l=>kind(l)==='stmt'&&/^\s*\w+\s*=[^=]/.test(l));
+ const simple=[['Entête ALGORITHME … DEBUT … FIN',(W.rows.some(r=>r.k==='head')&&W.rows.some(r=>r.k==='debut')&&W.rows.some(r=>r.k==='fin'))?.5:0,.5],
+ ['Initialisation du compteur à 0',(cm&&new RegExp('\\b'+cn+'\\s*←\\s*0(?![\\d.,])').test(flat))?.5:0,.5],['Incrémentation du compteur (rang ← rang + 1)',cm?.5:0,.5],
+ ['Initialisation du total HT à 0',(tn&&new RegExp('\\b'+tn+'\\s*←\\s*0([.,]0+)?(?!\\d)').test(flat))?.5:0,.5],['Cumul du tarif dans le total HT',tm?.5:0,.5],
+ ['Calcul du TTC (total HT × 1,19)',tt?1:0,1],['Lecture des réponses (Lire)',nLire>=2?.5:0,.5],
+ ['Affichages (au moins 3, dont le TTC)',(wr.length>=3?.25:0)+((ttv&&wr.some(l=>new RegExp('\\b'+ttv+'\\b').test(l)))?.25:0),.5],['Affectation écrite avec ← (jamais =)',stmtEq?0:.5,.5]];
+ const body=W.rows;let u=0;const f1=body.find(r=>r.exp===1&&r.ind>0);if(f1)u=f1.ind;else{const p=body.map(r=>r.ind).filter(x=>x>0);if(p.length)u=Math.min(...p)}
+ const okRows=body.filter(r=>u>0?r.ind===r.exp*u:r.exp===0).length,fr=body.length?okRows/body.length:0;
+ const indent=[['Indentation correcte des blocs ('+okRows+'/'+body.length+' lignes)',5*fr,5]];
+ const sum=a=>a.reduce((s,x)=>s+x[1],0),mx=a=>a.reduce((s,x)=>s+x[2],0);
+ const parts=[['Structure des données (T.D.O.)',tdo],['Structures conditionnelles',cond],['Structures itératives',iter],['Structures simples et indentation',simple.concat(indent)]].map(([t,a])=>({t,items:a.map(x=>({l:x[0],p:r1(x[1]),m:r1(x[2])})),p:r1(sum(a)),m:r1(mx(a))}));
+ if(lines.length<3){parts.forEach(p=>{p.items.forEach(i=>i.p=0);p.p=0})}
+ return{parts,total:r1(parts.reduce((s,x)=>s+x.p,0)),unb:W.unb+W.open}}
+// ---------- QCM / tournage / expressions
+const QCM=[
+{q:`Quel est le résultat de l'évaluation de l'expression estnum("2026A") ?`,o:['A) Vrai','B) Faux','C) Erreur'],a:[1]},
+{q:`Quelle fonction prédéfinie permet d'extraire une partie d'une chaîne de caractères ch à partir d'une position d jusqu'à une position f (exclue) ?`,o:['A) effacer(ch, d, f)','B) pos(ch, d, f)','C) sous_chaine(ch, d, f)','D) long(ch)'],a:[2]},
+{q:`Quelles sont les structures itératives à condition d'arrêt ? (Cochez toutes les réponses correctes)`,o:['Tant que ... faire','Pour ... faire','Répéter ... jusqu\'à','Selon ... faire'],a:[0,2],multi:1},
+{q:`Quelle est la valeur renvoyée par l'expression arithmétique 14 mod 3 ?`,o:['A) 4','B) 2','C) 4.66','D) 3'],a:[1]},
+{q:`Associez chaque fonction prédéfinie à son rôle exact :`,match:1,items:['1. long(ch)','2. abs(x)','3. pos(ch2, ch1)','4. convch(x)'],roles:['A. Retourne la valeur absolue.','B. Convertit un nombre en une chaîne de caractères.','C. Retourne le nombre de caractères d\'une chaîne.','D. Retourne la première position d\'une sous-chaîne.'],a:[2,0,3,1]},
+{q:`Quelle est la principale caractéristique de la boucle Répéter ... jusqu'à ?`,o:['A) Elle s\'exécute 0 fois si la condition est fausse.','B) Elle s\'exécute au moins une fois avant l\'évaluation de la condition d\'arrêt.','C) Elle nécessite un compteur obligatoire.','D) Elle gère uniquement les chaînes de caractères.'],a:[1]},
+{q:`Soient ch1 <- "Alger" et ch2 <- "Ariana". Que vaut l'expression logique (ord(ch1[0]) = ord(ch2[0])) Et (long(ch1) > long(ch2)) ?`,o:['A) Vrai','B) Faux'],a:[1]},
+{q:`Parmi ces identificateurs d'objets, lesquels sont valides en algorithmique ? (Cochez toutes les réponses correctes)`,o:['Prix_Achat','1X','somme','Prix+Achat'],a:[0,2],multi:1},
+{q:`Soit ch <- "INFORMAL". Que retourne l'expression sous_chaine(ch, 0, 4) ?`,o:['A) "INFO"','B) "INFORM"','C) "NFOR"','D) "INF"'],a:[0]},
+{q:`Combien de fois s'exécute le traitement de la boucle suivante : Pour i de 10 à 1 (Pas = -2) Faire ?`,o:['A) 4 fois','B) 5 fois','C) 6 fois','D) 10 fois'],a:[1]}];
+const TOUR=[[3,10,'Faux',8,2,'Faux'],[2,8,'Vrai',10,1,'Faux'],[1,10,'Faux',8,0,'Vrai']];
+const EXPR=[{e:'(x >= 10) Et (x <= 50) Et (x mod 2 = 0)',v:'vrai',t:'booleen',l:'Expression logique 1'},{e:'((ord(c) >= 97) Et (ord(c) <= 122)) Ou (c = " ")',v:'vrai',t:'booleen',l:'Expression logique 2'},{e:'res <- arrondi(racinecarré(abs(x - 50))) + ent(12.75)',v:'18',t:'entier',l:'Expression arithmétique'}];
+const TYPES=['Entier','Réel','Booléen','Caractère','Chaîne de caractères'];
+const num=s=>{const m=/^\s*(-?\d+(?:[.,]\d+)?)\s*$/.exec(s||'');return m?parseFloat(m[1].replace(',','.')):NaN};
+function gradeAll(A,ex4){const out=[[],[],[],null];
+ QCM.forEach((q,i)=>{const s=A['q'+i];let p=0,st='',cor='';
+  if(q.match){const sel=s||[];let c=0;q.a.forEach((a,k)=>{if(sel[k]===a)c++});p=c*.5;st=q.items.map((it,k)=>it.slice(0,2)+(sel[k]!==undefined&&sel[k]!==null&&sel[k]!==''?'→'+'ABCD'[sel[k]]:'→ ?')).join(' ; ');cor=q.items.map((it,k)=>it.slice(0,2)+'→'+'ABCD'[q.a[k]]).join(' ; ')}
+  else if(q.multi){const sel=s||[];const good=sel.filter(x=>q.a.includes(x)).length,bad=sel.length-good;p=Math.max(0,(good-bad)/q.a.length)*2;st=sel.length?sel.map(x=>q.o[x]).join(' ; '):'(aucune réponse)';cor=q.a.map(x=>q.o[x]).join(' ; ')}
+  else{p=(s!==undefined&&s!==null&&q.a.includes(s))?2:0;st=(s!==undefined&&s!==null)?q.o[s]:'(aucune réponse)';cor=q.o[q.a[0]]}
+  out[0].push({l:'Question '+(i+1),s:st,c:cor,p:r1(p),m:2})});
+ const bn=s=>N(s).trim().replace(/^true$/,'vrai').replace(/^false$/,'faux');
+ TOUR.forEach((r,i)=>{const g=A['t'+i]||[];const nm=[0,1,3,4];
+  [['n initial',0],['s initial',1],['condition n mod 2 = 0',2],['valeur de s',3],['valeur de n',4],['condition d\'arrêt n = 0',5]].forEach(([lab,k])=>{const exp=r[k],v=g[k];let ok=false;
+   if(k===2||k===5)ok=bn(v||'')===N(exp);else ok=num(v)===exp;
+   out[1].push({l:'Itération '+(i+1)+' : '+lab,s:v||'(vide)',c:String(exp),p:ok?.75:0,m:.75})})});
+ {const v=A.tr;out[1].push({l:'Résultat affiché à l\'écran',s:v||'(vide)',c:'8',p:num(v)===8?1.5:0,m:1.5})}
+ EXPR.forEach((x,i)=>{const g=A['e'+i]||{};const okv=bn(g.v||'')===x.v;const okt=N(g.t||'')===x.t;
+  out[2].push({l:x.l+' : valeur',s:g.v||'(vide)',c:x.v==='vrai'?'Vrai':'18',p:okv?2.5:0,m:2.5});
+  out[2].push({l:x.l+' : type',s:g.t||'(vide)',c:x.t==='booleen'?'Booléen':'Entier',p:okt?2.5:0,m:2.5})});
+ out[3]=ex4;return out}
+
+
+/* ============ interface ============ */
+const $=s=>document.querySelector(s),KEY='eval2si80_v1',TOTAL=80*60;
+let S=null,mem=null;
+const load=()=>{try{return JSON.parse(localStorage.getItem(KEY))}catch(e){return mem}};
+const save=()=>{mem=S;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const fmt=sec=>{sec=Math.max(0,Math.floor(sec));const h=Math.floor(sec/3600),m=Math.floor(sec%3600/60),s=sec%60;return(h?h+':'+String(m).padStart(2,'0'):String(m).padStart(2,'0'))+':'+String(s).padStart(2,'0')};
+function toast(t){let e=$('#toast');if(!e){e=document.createElement('div');e.id='toast';document.body.appendChild(e)}e.textContent=t;e.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>e.hidden=true,2200)}
+const TITLES=['Exercice 1 : QCM (20 points)','Exercice 2 : Tournage à la main (15 points)','Exercice 3 : Évaluation d’expressions (15 points)','Exercice 4 : Problème (50 points)'];
+const SEL=(k,j,v,opts,ph)=>`<select data-k="${k}" data-j="${j}"><option value="">${ph||'—'}</option>${opts.map((o,i)=>`<option value="${typeof o==='string'?o:i}"${String(v)===String(typeof o==='string'?o:i)?' selected':''}>${esc(typeof o==='string'?o:o)}</option>`).join('')}</select>`;
+function exHTML(i){const A=S.A;
+ if(i===0)return QCM.map((q,n)=>{let b='';
+  if(q.match){const sel=A['q'+n]||[];b=`<div class="tw"><table><tr><th>Fonction</th><th>Rôle (A à D)</th></tr>${q.items.map((it,k)=>`<tr><td>${esc(it)}</td><td><select data-k="q${n}" data-j="${k}"><option value="">[ ... ]</option>${'ABCD'.split('').map((L,x)=>`<option value="${x}"${sel[k]===x?' selected':''}>${L}</option>`).join('')}</select></td></tr>`).join('')}</table></div><p style="font-weight:400;margin:8px 0 0">${q.roles.map(esc).join('<br>')}</p>`}
+  else if(q.multi){const sel=A['q'+n]||[];b=q.o.map((o,k)=>`<label class="o"><input type="checkbox" data-k="q${n}" data-multi="1" value="${k}"${sel.includes(k)?' checked':''}>${esc(o)}</label>`).join('')}
+  else b=q.o.map((o,k)=>`<label class="o"><input type="radio" name="q${n}" data-k="q${n}" value="${k}"${A['q'+n]===k?' checked':''}>${esc(o)}</label>`).join('');
+  return `<div class="q"><p>${n+1}. ${esc(q.q)}</p>${b}</div>`}).join('');
+ if(i===1){const g=r=>A['t'+r]||[];const v=(r,k)=>esc(g(r)[k]||'');
+  return `<p>Soit l’algorithme suivant :</p><pre>ALGORITHME tournage_main
+DEBUT
+   n &lt;- 3
+   s &lt;- 10
+   Répéter
+      Si (n mod 2 = 0) Alors
+         s &lt;- s + n
+      Sinon
+         s &lt;- s - 2
+      Fin Si
+      n &lt;- n - 1
+   Jusqu'à (n = 0)
+   Ecrire(s)
+FIN</pre><p><b>Travail demandé :</b> Compléter le tableau d'exécution manuelle ci-dessous et donner le résultat affiché à l'écran.</p><div class="tw"><table><tr><th>Itération</th><th>État initial</th><th>Condition n mod 2 = 0</th><th>Valeur de s</th><th>Valeur de n</th><th>Condition d'arrêt n = 0</th></tr>${[0,1,2].map(r=>`<tr><td>${r+1}</td><td>n = <input type="text" class="mini" data-k="t${r}" data-j="0" value="${v(r,0)}" inputmode="numeric"> s = <input type="text" class="mini" data-k="t${r}" data-j="1" value="${v(r,1)}" inputmode="numeric"></td><td>${SEL('t'+r,2,g(r)[2],['Vrai','Faux'])}</td><td><input type="text" class="mini" data-k="t${r}" data-j="3" value="${v(r,3)}" inputmode="numeric"></td><td><input type="text" class="mini" data-k="t${r}" data-j="4" value="${v(r,4)}" inputmode="numeric"></td><td>${SEL('t'+r,5,g(r)[5],['Vrai','Faux'])}</td></tr>`).join('')}</table></div><p style="margin-top:12px">Résultat affiché : <input type="text" class="mini" data-k="tr" value="${esc(A.tr||'')}" inputmode="numeric"></p>`}
+ if(i===2)return `<p>Soient x &lt;- 14 et c &lt;- "m". Donner la valeur et le type du résultat de chacune des expressions suivantes :</p>${EXPR.map((x,n)=>{const g=A['e'+n]||{};return `<div class="q"><p>${x.l} : <span style="font-family:ui-monospace,Consolas,monospace;font-weight:400">${esc(x.e)}</span></p><div style="display:flex;gap:12px;flex-wrap:wrap"><div style="flex:1 1 180px"><label>${n===2?'Valeur de res':'Valeur'}</label><input type="text" data-k="e${n}" data-f="v" value="${esc(g.v||'')}"></div><div style="flex:1 1 180px"><label>Type</label><select data-k="e${n}" data-f="t"><option value="">—</option>${TYPES.map(t=>`<option${g.t===t?' selected':''}>${t}</option>`).join('')}</select></div></div></div>`}).join('')}`;
+ const rows=S.tdo.map((r,k)=>`<tr><td><input type="text" class="np" data-tdo="${k}" data-c="0" value="${esc(r[0])}"></td><td><input type="text" class="np" data-tdo="${k}" data-c="1" value="${esc(r[1])}"></td></tr>`).join('');
+ return `<p>Un parc d'attractions propose des billets d'entrée pour les familles selon trois formules au choix :</p><p style="margin:0 0 8px">Formule 'A' (Standard) : 40 TND<br>Formule 'B' (VIP) : 75 TND<br>Formule 'C' (Premium) : 120 TND</p><p>Afin d'encourager les familles à participer ensemble, le parc applique les réductions suivantes selon l'ordre d'inscription des membres d'une même famille :</p><p style="margin:0 0 8px">1er membre : aucune réduction (plein tarif de la formule choisie).<br>2ème membre : réduction de 15% sur le tarif de sa formule.<br>3ème membre et plus : réduction de 25% sur le tarif de sa formule.</p><p>À la fin de la saisie des membres de la famille, une TVA de 19% est ajoutée au montant total Hors Taxes (HT) pour obtenir le montant total Toutes Taxes Comprises (TTC).</p><h3>Exemple de calcul</h3><p style="margin:0 0 6px">Pour une famille de 3 membres choisissant respectivement les formules A, B et C :</p><p style="margin:0">Membre 1 (Formule A - plein tarif) : 40 TND<br>Membre 2 (Formule B - réduction 15%) : 75 − (75 × 0.15) = 75 × 0.85 = 63.75 TND<br>Membre 3 (Formule C - réduction 25%) : 120 − (120 × 0.25) = 120 × 0.75 = 90 TND<br>Montant Total HT : 40 + 63.75 + 90 = 193.75 TND<br>Montant Total TTC (TVA 19%) : 193.75 × 1.19 = 230.5625 TND</p><h3>Travail demandé</h3><p>Écrire un algorithme intitulé billetterie_famille (accompagné de son Tableau de Déclaration des Objets) qui permet d'enregistrer les membres d'une famille (tant que l'utilisateur répond 'O' à la question "Ajouter un autre membre ? (O/N)"), de calculer le tarif de chaque membre selon son rang et sa formule, puis d'afficher le montant total HT et le montant total TTC à payer par la famille.</p><h3>Tableau de Déclaration des Objets (T.D.O.)</h3><div class="tw"><table><tr><th>Objet</th><th>Type / Nature</th></tr>${rows}</table></div><div class="tb nop"><button type="button" data-addrow="1" style="font-family:system-ui">Ajouter une ligne</button></div><h3>Algorithme</h3><div class="tb nop"><button type="button" data-ins="←">←</button><button type="button" data-ins="≠">≠</button><button type="button" data-ins="≥">≥</button><button type="button" data-ins="≤">≤</button></div><textarea class="alg np" id="alg" spellcheck="false" autocomplete="off" autocapitalize="off" placeholder="ALGORITHME billetterie_famille&#10;DEBUT&#10;  ...&#10;FIN">${esc(S.alg)}</textarea><p style="color:var(--mut);font-size:13px;margin:6px 0 0">La touche Tab insère deux espaces. Tu peux écrire ← ou &lt;-. L’indentation est notée.</p>`}
+function render(){const i=S.cur;$('#steps').innerHTML=TITLES.map((t,k)=>`<span class="${S.conf[k]?'ok':k===i?'on':''}">${esc(t.split(' (')[0])}${S.conf[k]?' : confirmé':''}</span>`).join('');
+ $('#ex').innerHTML=`<div class="card"><h2>${esc(TITLES[i])}</h2>${exHTML(i)}<div class="nav"><button class="btn ok" id="cf">${i<3?'Confirmer mes réponses et passer à l’exercice suivant':'Confirmer mes réponses et terminer l’évaluation'}</button></div></div>`;window.scrollTo(0,0)}
+function startApp(){$('#login').hidden=true;$('#app').hidden=false;$('#bn').textContent=S.p.n;$('#bc').textContent=S.p.c;$('#be').textContent=S.p.e;$('#bw').textContent=S.p.w;render();tick()}
+$('#lb').onclick=()=>{const n=$('#ln').value.trim(),c=$('#lc').value.trim(),e=$('#le').value.trim(),w=$('#lw').value.trim(),er=$('#le_err');
+ if(n.length<3||!c||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)){er.textContent='Renseigne ton nom et prénom, ta classe et une adresse e-mail valide.';return}
+ S={p:{n,c,e,w:w||'—'},t0:Date.now(),cur:0,A:{},tdo:Array.from({length:8},()=>['','']),alg:'',conf:[0,0,0,0],leave:0,away:0,done:0,sent:0};save();startApp()};
+/* saisies */
+document.addEventListener('input',ev=>{if(!S||S.done)return;const t=ev.target;
+ if(t.id==='alg'){S.alg=t.value;save();return}
+ if(t.dataset.tdo!==undefined){S.tdo[+t.dataset.tdo][+t.dataset.c]=t.value;save();return}
+ const k=t.dataset.k;if(!k)return;
+ if(t.dataset.multi){S.A[k]=[...document.querySelectorAll('[data-k="'+k+'"]:checked')].map(x=>+x.value)}
+ else if(t.type==='radio'){S.A[k]=+t.value}
+ else if(t.dataset.f){(S.A[k]=S.A[k]||{})[t.dataset.f]=t.value}
+ else if(t.dataset.j!==undefined){const a=S.A[k]=S.A[k]||[];const q=k[0]==='q';a[+t.dataset.j]=q?(t.value===''?'':+t.value):t.value}
+ else S.A[k]=t.value;save()});
+document.addEventListener('change',ev=>{if(ev.target.matches('select,input[type=radio],input[type=checkbox]')){const e=new Event('input',{bubbles:true});ev.target.dispatchEvent(e)}});
+document.addEventListener('click',ev=>{const t=ev.target;if(!S||S.done)return;
+ if(t.dataset.addrow){S.tdo.push(['','']);save();const y=window.scrollY;render();window.scrollTo(0,y);return}
+ if(t.dataset.ins){const a=$('#alg'),p=a.selectionStart;a.value=a.value.slice(0,p)+t.dataset.ins+a.value.slice(a.selectionEnd);a.selectionStart=a.selectionEnd=p+1;a.focus();S.alg=a.value;save();return}
+ if(t.id==='cf'){if(!t.dataset.armed){t.dataset.armed=1;t.textContent='Cliquer de nouveau pour confirmer définitivement';setTimeout(()=>{if(t.isConnected){delete t.dataset.armed;t.textContent=S.cur<3?'Confirmer mes réponses et passer à l’exercice suivant':'Confirmer mes réponses et terminer l’évaluation'}},4500);return}
+  S.conf[S.cur]=1;if(S.cur<3){S.cur++;save();render()}else{save();finish('Évaluation terminée par l’élève',true)}}});
+document.addEventListener('keydown',ev=>{if(ev.target.id==='alg'&&ev.key==='Tab'){ev.preventDefault();const a=ev.target,p=a.selectionStart;a.value=a.value.slice(0,p)+'  '+a.value.slice(a.selectionEnd);a.selectionStart=a.selectionEnd=p+2;S.alg=a.value;save()}});
+['paste','drop','contextmenu'].forEach(n=>document.addEventListener(n,ev=>{if(S&&!S.done&&ev.target.closest&&ev.target.closest('.np')){ev.preventDefault();toast('Cette action est désactivée pendant l’évaluation')}}));
+document.addEventListener('visibilitychange',()=>{if(!S||S.done)return;if(document.hidden)S.hid=Date.now();else if(S.hid){S.leave++;S.away+=Date.now()-S.hid;S.hid=0;save()}});
+/* chronomètre */
+function tick(){if(!S||S.done)return;const el=(Date.now()-S.t0)/1000,rest=TOTAL-el;$('#tm').textContent=fmt(rest);$('#tm').classList.toggle('low',rest<600);$('#pg i').style.width=Math.min(100,el/TOTAL*100)+'%';if(rest<=0){finish('Temps écoulé (80 minutes)',false);return}setTimeout(tick,400)}
+/* rapport */
+const stat=(p,m)=>p>=m-1e-9?['Correct','good']:p>0?['Partiel','mid']:['Incorrect','bad'];
+function results(){const g=gradeAll(S.A,gradeEx4(S.tdo,S.alg));const sum=a=>Math.round(a.reduce((s,x)=>s+x.p,0)*100)/100;const ex=[sum(g[0]),sum(g[1]),sum(g[2]),g[3].total];return{g,ex,total:Math.round(ex.reduce((a,b)=>a+b,0)*100)/100}}
+function elapsed(){return Math.min((S.end||Date.now())-S.t0,TOTAL*1000)/1000}
+function reportText(R){const g=R.g;let t=`ÉVALUATION 2ème Informatique – Algorithmique (80 min) – Lycée Hannibal – Ariana\nÉlève : ${S.p.n} | Classe : ${S.p.c} | Email : ${S.p.e} | WhatsApp : ${S.p.w}\nNote finale : ${R.total} / 100\nExercice 1 : ${R.ex[0]}/20 | Exercice 2 : ${R.ex[1]}/15 | Exercice 3 : ${R.ex[2]}/15 | Exercice 4 : ${R.ex[3]}/50\nTemps écoulé : ${fmt(elapsed())} sur 80:00 (${S.reason||''})\nSorties de la page : ${S.leave} (${fmt(S.away/1000)} hors de la page)\n`;
+ ['EXERCICE 1','EXERCICE 2','EXERCICE 3'].forEach((n,i)=>{t+=`\n--- ${n} ---\n`;g[i].forEach(x=>t+=`${x.l} | réponse : ${x.s} | correction : ${x.c} | ${x.p}/${x.m}\n`)});
+ t+=`\n--- EXERCICE 4 ---\nT.D.O. de l’élève :\n${S.tdo.filter(r=>r[0]||r[1]).map(r=>'  '+r[0]+' : '+r[1]).join('\n')||'  (vide)'}\nAlgorithme de l’élève :\n${S.alg||'(vide)'}\n`;
+ g[3].parts.forEach(p=>{t+=`${p.t} : ${p.p}/${p.m}\n`;p.items.forEach(i=>t+=`   - ${i.l} : ${i.p}/${i.m}\n`)});return t}
+function reportHTML(R){const g=R.g;let h=`<div class="card"><h1>Rapport final de l’évaluation</h1><p style="margin:0;color:var(--mut)">${esc(S.p.n)} · ${esc(S.p.c)} · ${esc(S.p.e)} · WhatsApp ${esc(S.p.w)}</p>
+ <div class="kpis"><div><small>Note finale</small><span class="big">${R.total}</span> / 100</div><div><small>Temps écoulé</small><b style="font-size:22px">${fmt(elapsed())}</b> sur 80:00<small>${esc(S.reason||'')}</small></div><div><small>Sorties de la page</small><b style="font-size:22px">${S.leave}</b><small>${fmt(S.away/1000)} hors de la page</small></div></div>
+ <div class="tw"><table><tr><th>Exercice</th><th>Points obtenus</th><th>Barème</th></tr>${R.ex.map((p,i)=>`<tr><td>${esc(TITLES[i].split(' (')[0])} : ${esc(TITLES[i].split(' : ')[1].split(' (')[0])}</td><td><b>${p}</b></td><td>${[20,15,15,50][i]}</td></tr>`).join('')}<tr><th>Total</th><th>${R.total}</th><th>100</th></tr></table></div></div>`;
+ [0,1,2].forEach(i=>{h+=`<div class="card"><h2>${esc(TITLES[i])} : réponses et correction</h2><div class="tw"><table><tr><th>Question</th><th>Ta réponse</th><th>Correction</th><th>Points</th></tr>${g[i].map(x=>{const s=stat(x.p,x.m);return `<tr><td>${esc(x.l)}</td><td>${esc(x.s)}</td><td>${esc(x.c)}</td><td><span class="${s[1]}">${x.p} / ${x.m}</span></td></tr>`}).join('')}</table></div></div>`});
+ h+=`<div class="card"><h2>${esc(TITLES[3])} : correction détaillée</h2><div class="tw"><table><tr><th>Critère</th><th>Points</th></tr>${g[3].parts.map(p=>`<tr><th colspan="2">${esc(p.t)} : ${p.p} / ${p.m}</th></tr>`+p.items.map(i=>`<tr><td>${esc(i.l)}</td><td><span class="${stat(i.p,i.m)[1]}">${i.p} / ${i.m}</span></td></tr>`).join('')).join('')}</table></div>${g[3].unb?`<div class="warn">Blocs non fermés ou mal fermés détectés dans ton algorithme : ${g[3].unb}.</div>`:''}
+ <h3>Ton T.D.O. et ton algorithme</h3><pre>${esc(S.tdo.filter(r=>r[0]||r[1]).map(r=>r[0]+' : '+r[1]).join('\n')||'(T.D.O. vide)')}</pre><pre>${esc(S.alg||'(algorithme vide)')}</pre>
+ <h3>Solution de référence</h3><pre>${esc(REF_TDO.map(r=>r[0]+' : '+r[1]).join('\n'))}</pre><pre>${esc(REF)}</pre><p style="color:var(--mut);font-size:13px">La note de l’exercice 4 est calculée automatiquement en comparant la structure de ton algorithme à la solution de référence (T.D.O. 20 %, conditionnelles 30 %, itératives 30 %, structures simples et indentation 20 %). Des variantes correctes sont acceptées ; ton professeur peut ajuster la note.</p></div>`;return h}
+function saveFile(name,text){const done=()=>toast('Rapport enregistré');try{if(window.claude&&claude.use){claude.use('downloads').then(d=>{if(d){d.save({filename:name,data:text}).then(done,()=>{})}else blobDl(name,text)},()=>blobDl(name,text));return}}catch(e){}blobDl(name,text)}
+function blobDl(name,text){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));a.download=name;document.body.appendChild(a);a.click();a.remove()}
+function copyText(t){try{navigator.clipboard.writeText(t).then(()=>toast('Rapport copié'),()=>{});}catch(e){}}
+function mailLink(R){const b=`Évaluation 2ème Informatique (80 min)\nÉlève : ${S.p.n} – ${S.p.c}\nNote : ${R.total}/100 (Ex1 ${R.ex[0]}/20, Ex2 ${R.ex[1]}/15, Ex3 ${R.ex[2]}/15, Ex4 ${R.ex[3]}/50)\nTemps : ${fmt(elapsed())} sur 80:00 – sorties de la page : ${S.leave}\n\n[Rapport complet : colle ici le rapport copié, ou joins le fichier téléchargé]`;return 'mailto:aymen911@gmail.com?subject='+encodeURIComponent('Évaluation 2ème Informatique – '+S.p.n+' – '+R.total+'/100')+'&body='+encodeURIComponent(b)}
+function finish(reason,gesture){if(S.done&&S.reason)return;S.done=1;S.reason=reason;S.end=Date.now();save();$('#app').hidden=true;$('#login').hidden=true;showReport(gesture)}
+function showReport(gesture){const R=results(),txt=reportText(R),box=$('#rep');box.hidden=false;
+ box.innerHTML=`<div class="card nop"><h2>Envoi du rapport à ton professeur</h2><p id="snd" style="margin:0 0 8px">Envoi automatique en cours…</p><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn" id="bm">Envoyer le rapport par e-mail à aymen911@gmail.com</button><button class="btn g" id="bd">Télécharger le rapport</button><button class="btn g" id="bc2">Copier le rapport</button><button class="btn g" onclick="window.print()">Imprimer</button></div></div>`+reportHTML(R)+`<div class="card nop"><h3 style="margin-top:0">Rapport complet (texte)</h3><textarea readonly rows="8" style="font:12.5px/1.5 ui-monospace,Consolas,monospace" onfocus="this.select()">${esc(txt)}</textarea></div>`;
+ $('#bm').onclick=()=>{copyText(txt);location.href=mailLink(R)};$('#bd').onclick=()=>saveFile('rapport_'+S.p.n.replace(/\s+/g,'_')+'.txt',txt);$('#bc2').onclick=()=>copyText(txt);
+ autoSend(R,txt,gesture);window.scrollTo(0,0)}
+async function autoSend(R,txt,gesture){const st=$('#snd');if(S.sent){st.innerHTML='<span class="good">Le rapport a déjà été envoyé automatiquement.</span>';return}
+ try{const ctl=new AbortController();setTimeout(()=>ctl.abort(),9000);const r=await fetch('https://formsubmit.co/ajax/aymen911@gmail.com',{method:'POST',signal:ctl.signal,headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({_subject:'Évaluation 2ème Informatique – '+S.p.n+' – '+R.total+'/100',_captcha:'false',nom:S.p.n,classe:S.p.c,email:S.p.e,note:R.total+' / 100',message:txt})});
+  if(r.ok){S.sent=1;save();st.innerHTML='<span class="good">Rapport envoyé automatiquement à aymen911@gmail.com.</span>';return}throw 0}
+ catch(e){st.innerHTML='<span class="mid">L’envoi automatique n’est pas possible depuis cette page.</span> Clique sur « Envoyer le rapport par e-mail » : le rapport est copié, ton application de messagerie s’ouvre, et tu colles le rapport dans le message (ou tu joins le fichier téléchargé).';if(gesture){try{copyText(txt)}catch(_){}}}}
+/* démarrage */
+S=load();
+if(S&&S.t0){if(S.done)showReport(false);else{const rest=TOTAL-(Date.now()-S.t0)/1000;if(rest<=0)finish('Temps écoulé (80 minutes)',false);else startApp()}}
+</script></body></html>
