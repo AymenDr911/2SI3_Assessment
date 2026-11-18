@@ -234,7 +234,8 @@ function gradeAll(A,ex4){const out=[[],[],[],null];
 
 /* ============ interface ============ */
 const $=s=>document.querySelector(s),KEY='eval2si80_v1',TOTAL=80*60;
-let S=null,mem=null;
+const FORMSPREE_ENDPOINT='https://formspree.io/f/xljbnwoq'; // Set the recipient in Formspree > this form > Workflow > Email action.
+let S=null,mem=null,emailRequestInProgress=false;
 const load=()=>{try{return JSON.parse(localStorage.getItem(KEY))}catch(e){return mem}};
 const save=()=>{mem=S;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
 const esc=s=>String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -271,7 +272,7 @@ function render(){const i=S.cur;$('#steps').innerHTML=TITLES.map((t,k)=>`<span c
 function startApp(){$('#login').hidden=true;$('#app').hidden=false;$('#bn').textContent=S.p.n;$('#bc').textContent=S.p.c;$('#be').textContent=S.p.e;$('#bw').textContent=S.p.w;render();tick()}
 $('#lb').onclick=()=>{const n=$('#ln').value.trim(),c=$('#lc').value.trim(),e=$('#le').value.trim(),w=$('#lw').value.trim(),er=$('#le_err');
  if(n.length<3||!c||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)){er.textContent='Renseigne ton nom et prénom, ta classe et une adresse e-mail valide.';return}
- S={p:{n,c,e,w:w||'—'},t0:Date.now(),cur:0,A:{},tdo:Array.from({length:8},()=>['','']),alg:'',conf:[0,0,0,0],leave:0,away:0,done:0,sent:0};save();startApp()};
+ S={p:{n,c,e,w:w||'—'},t0:Date.now(),cur:0,A:{},tdo:Array.from({length:8},()=>['','']),alg:'',conf:[0,0,0,0],leave:0,away:0,done:0,sent:0,emailStatus:'not_sent',emailError:''};save();startApp()};
 /* saisies */
 document.addEventListener('input',ev=>{if(!S||S.done)return;const t=ev.target;
  if(t.id==='alg'){S.alg=t.value;save();return}
@@ -311,16 +312,58 @@ function reportHTML(R){const g=R.g;let h=`<div class="card"><h1>Rapport final de
 function saveFile(name,text){const done=()=>toast('Rapport enregistré');try{if(window.claude&&claude.use){claude.use('downloads').then(d=>{if(d){d.save({filename:name,data:text}).then(done,()=>{})}else blobDl(name,text)},()=>blobDl(name,text));return}}catch(e){}blobDl(name,text)}
 function blobDl(name,text){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));a.download=name;document.body.appendChild(a);a.click();a.remove()}
 function copyText(t){try{navigator.clipboard.writeText(t).then(()=>toast('Rapport copié'),()=>{});}catch(e){}}
-function mailLink(R){const b=`Évaluation 2ème Informatique (80 min)\nÉlève : ${S.p.n} – ${S.p.c}\nNote : ${R.total}/100 (Ex1 ${R.ex[0]}/20, Ex2 ${R.ex[1]}/15, Ex3 ${R.ex[2]}/15, Ex4 ${R.ex[3]}/50)\nTemps : ${fmt(elapsed())} sur 80:00 – sorties de la page : ${S.leave}\n\n[Rapport complet : colle ici le rapport copié, ou joins le fichier téléchargé]`;return 'mailto:aymen911@gmail.com?subject='+encodeURIComponent('Évaluation 2ème Informatique – '+S.p.n+' – '+R.total+'/100')+'&body='+encodeURIComponent(b)}
 function finish(reason,gesture){if(S.done&&S.reason)return;S.done=1;S.reason=reason;S.end=Date.now();save();$('#app').hidden=true;$('#login').hidden=true;showReport(gesture)}
+function setMailMessage(message,kind){const st=$('#snd');if(!st)return;st.className=kind||'';st.textContent=message}
+function setMailButton(state){const btn=$('#bm');if(!btn)return;if(state==='sending'){btn.disabled=true;btn.textContent='Envoi en cours…'}else if(state==='sent'){btn.disabled=true;btn.textContent='Rapport transmis à Formspree'}else{btn.disabled=false;btn.textContent='Réessayer l’envoi via Formspree'}}
 function showReport(gesture){const R=results(),txt=reportText(R),box=$('#rep');box.hidden=false;
- box.innerHTML=`<div class="card nop"><h2>Envoi du rapport à ton professeur</h2><p id="snd" style="margin:0 0 8px">Envoi automatique en cours…</p><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn" id="bm">Envoyer le rapport par e-mail à aymen911@gmail.com</button><button class="btn g" id="bd">Télécharger le rapport</button><button class="btn g" id="bc2">Copier le rapport</button><button class="btn g" onclick="window.print()">Imprimer</button></div></div>`+reportHTML(R)+`<div class="card nop"><h3 style="margin-top:0">Rapport complet (texte)</h3><textarea readonly rows="8" style="font:12.5px/1.5 ui-monospace,Consolas,monospace" onfocus="this.select()">${esc(txt)}</textarea></div>`;
- $('#bm').onclick=()=>{copyText(txt);location.href=mailLink(R)};$('#bd').onclick=()=>saveFile('rapport_'+S.p.n.replace(/\s+/g,'_')+'.txt',txt);$('#bc2').onclick=()=>copyText(txt);
- autoSend(R,txt,gesture);window.scrollTo(0,0)}
-async function autoSend(R,txt,gesture){const st=$('#snd');if(S.sent){st.innerHTML='<span class="good">Le rapport a déjà été envoyé automatiquement.</span>';return}
- try{const ctl=new AbortController();setTimeout(()=>ctl.abort(),9000);const r=await fetch('https://formsubmit.co/ajax/aymen911@gmail.com',{method:'POST',signal:ctl.signal,headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify({_subject:'Évaluation 2ème Informatique – '+S.p.n+' – '+R.total+'/100',_captcha:'false',nom:S.p.n,classe:S.p.c,email:S.p.e,note:R.total+' / 100',message:txt})});
-  if(r.ok){S.sent=1;save();st.innerHTML='<span class="good">Rapport envoyé automatiquement à aymen911@gmail.com.</span>';return}throw 0}
- catch(e){st.innerHTML='<span class="mid">L’envoi automatique n’est pas possible depuis cette page.</span> Clique sur « Envoyer le rapport par e-mail » : le rapport est copié, ton application de messagerie s’ouvre, et tu colles le rapport dans le message (ou tu joins le fichier téléchargé).';if(gesture){try{copyText(txt)}catch(_){}}}}
+ box.innerHTML=`<div class="card nop"><h2>Envoi du rapport à ton professeur</h2><p id="snd" style="margin:0 0 8px">Préparation de l’envoi automatique via Formspree…</p><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="btn" id="bm">Réessayer l’envoi via Formspree</button><button class="btn g" id="bd">Télécharger le rapport</button><button class="btn g" id="bc2">Copier le rapport</button><button class="btn g" onclick="window.print()">Imprimer</button></div></div>`+reportHTML(R)+`<div class="card nop"><h3 style="margin-top:0">Rapport complet (texte)</h3><textarea readonly rows="8" style="font:12.5px/1.5 ui-monospace,Consolas,monospace" onfocus="this.select()">${esc(txt)}</textarea></div>`;
+ $('#bm').onclick=()=>sendToFormspree(R,txt);$('#bd').onclick=()=>saveFile('rapport_'+S.p.n.replace(/\s+/g,'_')+'.txt',txt);$('#bc2').onclick=()=>copyText(txt);
+ let status=S.emailStatus||(S.sent?'sent':'not_sent');
+ // A refresh during a request makes its final status unknowable. Do not silently send a duplicate.
+ if(status==='sending'){status='unknown';S.emailStatus='unknown';save()}
+ if(S.sent||status==='sent'){setMailMessage('Formspree a accepté le rapport. Vérifie la boîte de réception configurée dans ton compte Formspree.', 'good');setMailButton('sent')}
+ else if(status==='not_sent'){sendToFormspree(R,txt)}
+ else if(status==='failed'){setMailMessage('L’envoi automatique a échoué. '+(S.emailError||'Vérifie la configuration Formspree et réessaie.'), 'mid');setMailButton('retry')}
+ else{setMailMessage('Le statut du dernier envoi est incertain (actualisation pendant l’envoi). Vérifie d’abord le tableau de bord Formspree et la boîte de réception avant de réessayer.', 'mid');setMailButton('retry')}
+ window.scrollTo(0,0)}
+async function sendToFormspree(R,txt){
+ if(!S||S.sent||S.emailStatus==='sent'){setMailMessage('Formspree a déjà accepté ce rapport.', 'good');setMailButton('sent');return}
+ if(emailRequestInProgress)return;
+ emailRequestInProgress=true;S.emailStatus='sending';S.emailError='';save();setMailMessage('Envoi du rapport complet à Formspree en cours…','mid');setMailButton('sending');
+ const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),15000);let responseReceived=false,responseStatus=0;
+ try{
+  const payload={
+   name:S.p.n,
+   email:S.p.e,
+   subject:'Évaluation 2ème Informatique – '+S.p.n+' – '+R.total+'/100',
+   classe:S.p.c,
+   whatsapp:S.p.w,
+   score:R.total+' / 100',
+   exercise_1:R.ex[0]+' / 20',
+   exercise_2:R.ex[1]+' / 15',
+   exercise_3:R.ex[2]+' / 15',
+   exercise_4:R.ex[3]+' / 50',
+   duration:fmt(elapsed()),
+   page_exits:String(S.leave),
+   finish_reason:S.reason||'',
+   message:txt
+  };
+  const response=await fetch(FORMSPREE_ENDPOINT,{method:'POST',signal:controller.signal,headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload)});
+  responseReceived=true;responseStatus=response.status;
+  let result={};try{result=await response.json()}catch(_){result={}}
+  if(response.status===429)throw new Error('Limite de soumissions atteinte. Attends avant de réessayer.');
+  if(!response.ok){const details=Array.isArray(result.errors)?result.errors.map(x=>x.message).filter(Boolean).join(' ; '):(result.error||result.message||'');throw new Error(details||('Erreur HTTP '+response.status))}
+  S.sent=1;S.emailStatus='sent';S.emailError='';save();
+  setMailMessage('Transmission confirmée : Formspree a accepté le rapport. Vérifie la boîte de réception définie dans les paramètres du formulaire.', 'good');setMailButton('sent');
+ }catch(error){
+  const uncertain=!responseReceived||responseStatus>=500;
+  const detail=error&&error.name==='AbortError'?'Délai de réponse dépassé.':(error&&error.message?error.message:'Erreur réseau ou configuration Formspree.');
+  S.sent=0;S.emailStatus=uncertain?'unknown':'failed';S.emailError=detail;save();
+  if(uncertain)setMailMessage('Statut d’envoi incertain : '+detail+' Vérifie d’abord les soumissions dans Formspree et la boîte de réception avant de réessayer.', 'mid');
+  else setMailMessage('Formspree a refusé la soumission : '+detail+' Corrige la configuration, puis utilise le bouton pour réessayer.', 'mid');
+  setMailButton('retry');
+ }finally{clearTimeout(timeout);emailRequestInProgress=false}
+}
 /* démarrage */
 S=load();
 if(S&&S.t0){if(S.done)showReport(false);else{const rest=TOTAL-(Date.now()-S.t0)/1000;if(rest<=0)finish('Temps écoulé (80 minutes)',false);else startApp()}}
