@@ -45,7 +45,7 @@ textarea.alg{font:14px/1.6 ui-monospace,Consolas,monospace;height:calc(30 * 1.6e
 @media(max-width:640px){.off{grid-template-columns:1fr}}
 </style></head><body>
 <div id="login" class="wrap">
- <div class="off"><div><b>République Tunisienne</b></div><div>Année scolaire : <b>2026 – 2027</b></div><div>Ministère de l’Éducation</div><div>Email : <b>aymen.a@hotmail.com</b></div><div>Lycée Hannibal – Ariana</div><div>Niveau : <b>2ème Informatique</b></div>
+ <div class="off"><div><b>République Tunisienne</b></div><div>Année scolaire : <b>2026 – 2027</b></div><div>Ministère de l’Éducation</div><div>Email : <b>aymen911@gmail.com</b></div><div>Lycée Hannibal – Ariana</div><div>Niveau : <b>2ème Informatique</b></div>
  <div class="c"><b>Évaluation : Algorithmique et Programmation</b> · Les structures de données et les structures itératives</div></div>
  <div class="card"><h1>Connexion à l’évaluation</h1>
   <p style="margin:0;color:var(--mut)">Durée totale : <b>80 minutes</b>, notée sur <b>100 points</b>, corrigée automatiquement.</p>
@@ -64,7 +64,7 @@ textarea.alg{font:14px/1.6 ui-monospace,Consolas,monospace;height:calc(30 * 1.6e
  </div></div>
 <div id="app" hidden>
  <div id="bar"><div class="in"><div class="id"><b id="bn"></b> · <span id="bc"></span> · <span id="be"></span> · <span id="bw"></span></div><div>Temps restant : <span id="tm">80:00</span></div></div></div><div id="pg"><i></i></div>
- <div class="wrap"><div class="off"><div><b>République Tunisienne</b></div><div>Année scolaire : <b>2026 – 2027</b></div><div>Ministère de l’Éducation</div><div>Email : <b>aymen.a@hotmail.com</b></div><div>Lycée Hannibal – Ariana</div><div>Niveau : <b>2ème Informatique</b></div>
+ <div class="wrap"><div class="off"><div><b>République Tunisienne</b></div><div>Année scolaire : <b>2026 – 2027</b></div><div>Ministère de l’Éducation</div><div>Email : <b>aymen911@gmail.com</b></div><div>Lycée Hannibal – Ariana</div><div>Niveau : <b>2ème Informatique</b></div>
  <div class="c"><b>Évaluation : Algorithmique et Programmation</b> · Les structures de données et les structures itératives</div></div>
  <div class="steps" id="steps"></div><div id="ex"></div></div></div>
 <div id="rep" hidden class="wrap"></div>
@@ -366,5 +366,16 @@ async function sendToFormspree(R,txt){
 }
 /* démarrage */
 S=load();
-if(S&&S.t0){if(S.done)showReport(false);else{const rest=TOTAL-(Date.now()-S.t0)/1000;if(rest<=0)finish('Temps écoulé (80 minutes)',false);else startApp()}}
+if(S&&S.t0){
+ if(S.done){
+  // Completed reports are shown only during the session in which the assessment ended.
+  // On the next page load, clear the completed attempt so the student sees a fresh login.
+  try{localStorage.removeItem(KEY)}catch(e){}
+  S=null;mem=null;
+ }else{
+  const rest=TOTAL-(Date.now()-S.t0)/1000;
+  if(rest<=0)finish('Temps écoulé (80 minutes)',false);
+  else startApp();
+ }
+}
 </script></body></html>
